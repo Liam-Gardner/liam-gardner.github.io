@@ -60,6 +60,7 @@ const getRules2 = (formData: InitialFormData, debugMode = false) => {
 };
 
 const handleMenuSubmit = () => {
+  handleMenuBtnLoader(true);
   let storeId = (<HTMLInputElement>document.getElementById("storeId")).value;
   let username = (<HTMLInputElement>document.getElementById("name")).value;
   let password = (<HTMLInputElement>document.getElementById("password")).value;

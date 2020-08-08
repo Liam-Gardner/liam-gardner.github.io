@@ -73,6 +73,7 @@ var getRules2 = function (formData, debugMode) {
     });
 };
 var handleMenuSubmit = function () {
+    handleMenuBtnLoader(true);
     var storeId = document.getElementById("storeId").value;
     var username = document.getElementById("name").value;
     var password = document.getElementById("password").value;
