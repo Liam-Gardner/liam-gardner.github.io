@@ -33,7 +33,7 @@ const handleMenuBtnLoader = (loading: boolean) => {
 
 const getRules2 = (formData: InitialFormData, debugMode = false) => {
   const route: Route = debugMode ? "debug" : "useMetabase";
-  fetch(`https://34.241.97.244:3500/${route}/login-dbs`, {
+  fetch(` https://e8b9c0b7b8cf.ngrok.io/${route}/login-dbs`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -78,7 +78,7 @@ const getMenuItems = (formData: {
   //   handleMenuBtnLoader(false);
   //#endregion
 
-  fetch(`https://34.241.97.244:3500/useMetabase/login-dbs-demo`, {
+  fetch(` https://e8b9c0b7b8cf.ngrok.io/useMetabase/login-dbs-demo`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
