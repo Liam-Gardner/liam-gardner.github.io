@@ -46,7 +46,7 @@ var handleMenuBtnLoader = function (loading) {
 var getRules2 = function (formData, debugMode) {
     if (debugMode === void 0) { debugMode = false; }
     var route = debugMode ? "debug" : "useMetabase";
-    fetch(" https://e8b9c0b7b8cf.ngrok.io/" + route + "/login-dbs", {
+    fetch(" https://45154ce1b1f3.ngrok.io/" + route + "/login-dbs", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -85,7 +85,7 @@ var getMenuItems = function (formData) {
     //   createMenuItems(dummyMenu);
     //   handleMenuBtnLoader(false);
     //#endregion
-    fetch(" https://e8b9c0b7b8cf.ngrok.io/useMetabase/login-dbs-demo", {
+    fetch("https://45154ce1b1f3.ngrok.io/useMetabase/login-dbs-demo", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
