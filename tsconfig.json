@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "outDir": "./built",
+    "watch": true,
+    "allowJs": true,
+    "target": "es5",
+    "lib": ["es2017", "dom"],
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
+    "alwaysStrict": false,
+    "strictFunctionTypes": false,
+    "strictPropertyInitialization": false,
+    "strict": false,
+    "downlevelIteration": true
+  },
+  "include": ["./src/**/*", "built/main.js"]
+}
