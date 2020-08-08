@@ -1,6 +1,9 @@
 body {
   font-family: sans-serif;
 }
+nav {
+  padding: 16px 0 0 16px;
+}
 table {
   margin-top: 24px;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -134,14 +137,14 @@ p#no-data {
 }
 
 .menuItemContainer {
-  background: #e2e1e0;
+  background: rgb(215, 98, 88);
 }
 
 .menuItem {
   margin: 12px;
   width: 120px;
-  padding: 12px 16px;
-  height: 100px;
+  padding: 10px;
+  height: 75;
   display: inline-flex;
 }
 
