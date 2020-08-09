@@ -173,3 +173,7 @@ p#no-data {
 .suggestedItemBtn {
   border: 1px solid red;
 }
+
+#basketHeader {
+  display: none;
+}
