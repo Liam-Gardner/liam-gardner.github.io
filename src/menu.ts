@@ -8,10 +8,6 @@ const addMenuEvents = () => {
   document
     .getElementById("submit-menu")!
     .addEventListener("click", handleMenuSubmit);
-
-  document
-    .getElementById("clear-basket")
-    ?.addEventListener("click", clearBasket);
 };
 
 const handleMenuBtnLoader = (loading: boolean) => {
@@ -125,7 +121,9 @@ const addToBasket = (menuItem: string) => {
 };
 
 const clearBasket = () => {
+  console.log(basketState);
   basketState = [];
+  console.log(basketState);
 };
 
 const checkRules = (basketState: string[]) => {
@@ -170,6 +168,7 @@ const createClearBasketBtn = () => {
   let clearBasketBtn = document.createElement("button");
   clearBasketBtn.id = "clear-basket";
   clearBasketBtn.innerText = "Clear Basket";
+  clearBasketBtn.addEventListener("click", clearBasket);
   document.body.appendChild(clearBasketBtn);
 };
 //#region types
