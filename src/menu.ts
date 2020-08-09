@@ -183,7 +183,7 @@ const createBasketView = () => {
 };
 
 const showBasket = () => {
-  document.getElementById("basketHeader")!.style.display = "Basket:";
+  document.getElementById("basketHeader")!.style.display = "block";
 };
 
 const createClearBasketBtn = () => {

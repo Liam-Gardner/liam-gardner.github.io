@@ -182,7 +182,7 @@ var createBasketView = function () {
     document.getElementById("basket").innerText = basketState.toString();
 };
 var showBasket = function () {
-    document.getElementById("basketHeader").style.display = "Basket:";
+    document.getElementById("basketHeader").style.display = "block";
 };
 var createClearBasketBtn = function () {
     var clearBasketBtn = document.createElement("button");
