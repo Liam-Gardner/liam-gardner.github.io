@@ -115,21 +115,34 @@ let basketState: string[] = [];
 const addToBasket = (menuItem: string) => {
   basketState = [[...basketState, menuItem].join(",")];
   //   basketState = [...basketState, menuItem];
-  console.log(basketState);
+  createBasketView();
   // check if basket contains key from rules
   checkRules(basketState);
 };
 
 const clearBasket = () => {
-  console.log(basketState);
   basketState = [];
+  clearSuggestedItems();
   console.log(basketState);
+};
+
+const clearSuggestedItems = () => {
+  let htmlCollection = document.getElementsByClassName("suggestedItemBtn");
+  let arr = Array.from(htmlCollection);
+  arr.forEach((el) => el.remove());
+  let suggestedBar = document.getElementById("suggestedBar");
+  suggestedBar!.style.display = "none";
 };
 
 const checkRules = (basketState: string[]) => {
   // this should be extracted and done once, when the rules are returned from api
   const lhs = Object.keys(dummyRules);
   const isRule = lhs.includes(basketState.toString());
+  createSuggestedBar(isRule);
+  console.log(isRule);
+};
+
+const createSuggestedBar = (isRule: boolean) => {
   if (isRule) {
     const stickyBar = document.getElementById("suggestedBar");
 
@@ -147,7 +160,6 @@ const checkRules = (basketState: string[]) => {
       stickyBar.appendChild(suggestedItemBtn);
     }
   }
-  console.log(isRule);
 };
 
 const createMenuItems = (menu: string[]) => {
@@ -164,9 +176,14 @@ const createMenuItems = (menu: string[]) => {
   });
 };
 
+const createBasketView = () => {
+  document.getElementById("basket")!.innerText = basketState.toString();
+};
+
 const createClearBasketBtn = () => {
   let clearBasketBtn = document.createElement("button");
   clearBasketBtn.id = "clear-basket";
+  clearBasketBtn.className = "button clearBasket";
   clearBasketBtn.innerText = "Clear Basket";
   clearBasketBtn.addEventListener("click", clearBasket);
   document.body.appendChild(clearBasketBtn);

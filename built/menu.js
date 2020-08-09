@@ -124,19 +124,30 @@ var basketState = [];
 var addToBasket = function (menuItem) {
     basketState = [__spread(basketState, [menuItem]).join(",")];
     //   basketState = [...basketState, menuItem];
-    console.log(basketState);
+    createBasketView();
     // check if basket contains key from rules
     checkRules(basketState);
 };
 var clearBasket = function () {
-    console.log(basketState);
     basketState = [];
+    clearSuggestedItems();
     console.log(basketState);
+};
+var clearSuggestedItems = function () {
+    var htmlCollection = document.getElementsByClassName("suggestedItemBtn");
+    var arr = Array.from(htmlCollection);
+    arr.forEach(function (el) { return el.remove(); });
+    var suggestedBar = document.getElementById("suggestedBar");
+    suggestedBar.style.display = "none";
 };
 var checkRules = function (basketState) {
     // this should be extracted and done once, when the rules are returned from api
     var lhs = Object.keys(dummyRules);
     var isRule = lhs.includes(basketState.toString());
+    createSuggestedBar(isRule);
+    console.log(isRule);
+};
+var createSuggestedBar = function (isRule) {
     if (isRule) {
         var stickyBar = document.getElementById("suggestedBar");
         var rhs = dummyRules[basketState.toString()];
@@ -151,7 +162,6 @@ var checkRules = function (basketState) {
             stickyBar.appendChild(suggestedItemBtn_1);
         }
     }
-    console.log(isRule);
 };
 var createMenuItems = function (menu) {
     createClearBasketBtn();
@@ -166,9 +176,13 @@ var createMenuItems = function (menu) {
         menuItemContainer.appendChild(menuItem);
     });
 };
+var createBasketView = function () {
+    document.getElementById("basket").innerText = basketState.toString();
+};
 var createClearBasketBtn = function () {
     var clearBasketBtn = document.createElement("button");
     clearBasketBtn.id = "clear-basket";
+    clearBasketBtn.className = "button clearBasket";
     clearBasketBtn.innerText = "Clear Basket";
     clearBasketBtn.addEventListener("click", clearBasket);
     document.body.appendChild(clearBasketBtn);
