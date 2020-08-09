@@ -123,6 +123,7 @@ const addToBasket = (menuItem: string) => {
 const clearBasket = () => {
   basketState = [];
   clearSuggestedItems();
+  createBasketView();
   console.log(basketState);
 };
 
@@ -163,6 +164,7 @@ const createSuggestedBar = (isRule: boolean) => {
 };
 
 const createMenuItems = (menu: string[]) => {
+  showBasket();
   createClearBasketBtn();
   let menuItemContainer = document.createElement("div");
   menuItemContainer.className = "menuItemContainer";
@@ -178,6 +180,10 @@ const createMenuItems = (menu: string[]) => {
 
 const createBasketView = () => {
   document.getElementById("basket")!.innerText = basketState.toString();
+};
+
+const showBasket = () => {
+  document.getElementById("basketHeader")!.style.display = "Basket:";
 };
 
 const createClearBasketBtn = () => {

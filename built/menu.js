@@ -131,6 +131,7 @@ var addToBasket = function (menuItem) {
 var clearBasket = function () {
     basketState = [];
     clearSuggestedItems();
+    createBasketView();
     console.log(basketState);
 };
 var clearSuggestedItems = function () {
@@ -164,6 +165,7 @@ var createSuggestedBar = function (isRule) {
     }
 };
 var createMenuItems = function (menu) {
+    showBasket();
     createClearBasketBtn();
     var menuItemContainer = document.createElement("div");
     menuItemContainer.className = "menuItemContainer";
@@ -178,6 +180,9 @@ var createMenuItems = function (menu) {
 };
 var createBasketView = function () {
     document.getElementById("basket").innerText = basketState.toString();
+};
+var showBasket = function () {
+    document.getElementById("basketHeader").style.display = "Basket:";
 };
 var createClearBasketBtn = function () {
     var clearBasketBtn = document.createElement("button");
