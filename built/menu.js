@@ -20,13 +20,15 @@ var __spread = (this && this.__spread) || function () {
 };
 window.addEventListener("DOMContentLoaded", function (event) {
     addMenuEvents();
-    console.log("Rules: ", "Doner Kebab,The Big Deal Meal | \n", "Battered Burger,The Big Deal Meal | \n", "Curry Sauce,Fresh Cod,Smoked Cod \n");
 });
 var menuState = { loading: false };
 var addMenuEvents = function () {
+    var _a;
     document
         .getElementById("submit-menu")
         .addEventListener("click", handleMenuSubmit);
+    (_a = document
+        .getElementById("clear-basket")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", clearBasket);
 };
 var handleMenuBtnLoader = function (loading) {
     var button = document.getElementById("submit-menu");
@@ -129,6 +131,9 @@ var addToBasket = function (menuItem) {
     // check if basket contains key from rules
     checkRules(basketState);
 };
+var clearBasket = function () {
+    basketState = [];
+};
 var checkRules = function (basketState) {
     // this should be extracted and done once, when the rules are returned from api
     var lhs = Object.keys(dummyRules);
@@ -150,6 +155,7 @@ var checkRules = function (basketState) {
     console.log(isRule);
 };
 var createMenuItems = function (menu) {
+    createClearBasketBtn();
     var menuItemContainer = document.createElement("div");
     menuItemContainer.className = "menuItemContainer";
     document.body.appendChild(menuItemContainer);
@@ -160,6 +166,12 @@ var createMenuItems = function (menu) {
         menuItem.addEventListener("click", function () { return addToBasket(menuItem.innerText); });
         menuItemContainer.appendChild(menuItem);
     });
+};
+var createClearBasketBtn = function () {
+    var clearBasketBtn = document.createElement("button");
+    clearBasketBtn.id = "clear-basket";
+    clearBasketBtn.innerText = "Clear Basket";
+    document.body.appendChild(clearBasketBtn);
 };
 //#region types
 //#endregion

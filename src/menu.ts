@@ -1,11 +1,5 @@
 window.addEventListener("DOMContentLoaded", (event) => {
   addMenuEvents();
-  console.log(
-    "Rules: ",
-    "Doner Kebab,The Big Deal Meal | \n",
-    "Battered Burger,The Big Deal Meal | \n",
-    "Curry Sauce,Fresh Cod,Smoked Cod \n"
-  );
 });
 
 let menuState: { loading: boolean } = { loading: false };
@@ -14,6 +8,10 @@ const addMenuEvents = () => {
   document
     .getElementById("submit-menu")!
     .addEventListener("click", handleMenuSubmit);
+
+  document
+    .getElementById("clear-basket")
+    ?.addEventListener("click", clearBasket);
 };
 
 const handleMenuBtnLoader = (loading: boolean) => {
@@ -126,6 +124,10 @@ const addToBasket = (menuItem: string) => {
   checkRules(basketState);
 };
 
+const clearBasket = () => {
+  basketState = [];
+};
+
 const checkRules = (basketState: string[]) => {
   // this should be extracted and done once, when the rules are returned from api
   const lhs = Object.keys(dummyRules);
@@ -151,6 +153,7 @@ const checkRules = (basketState: string[]) => {
 };
 
 const createMenuItems = (menu: string[]) => {
+  createClearBasketBtn();
   let menuItemContainer = document.createElement("div");
   menuItemContainer.className = "menuItemContainer";
   document.body.appendChild(menuItemContainer);
@@ -163,6 +166,12 @@ const createMenuItems = (menu: string[]) => {
   });
 };
 
+const createClearBasketBtn = () => {
+  let clearBasketBtn = document.createElement("button");
+  clearBasketBtn.id = "clear-basket";
+  clearBasketBtn.innerText = "Clear Basket";
+  document.body.appendChild(clearBasketBtn);
+};
 //#region types
 //#endregion
 
