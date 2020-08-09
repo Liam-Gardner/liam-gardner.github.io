@@ -23,12 +23,9 @@ window.addEventListener("DOMContentLoaded", function (event) {
 });
 var menuState = { loading: false };
 var addMenuEvents = function () {
-    var _a;
     document
         .getElementById("submit-menu")
         .addEventListener("click", handleMenuSubmit);
-    (_a = document
-        .getElementById("clear-basket")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", clearBasket);
 };
 var handleMenuBtnLoader = function (loading) {
     var button = document.getElementById("submit-menu");
@@ -132,7 +129,9 @@ var addToBasket = function (menuItem) {
     checkRules(basketState);
 };
 var clearBasket = function () {
+    console.log(basketState);
     basketState = [];
+    console.log(basketState);
 };
 var checkRules = function (basketState) {
     // this should be extracted and done once, when the rules are returned from api
@@ -171,6 +170,7 @@ var createClearBasketBtn = function () {
     var clearBasketBtn = document.createElement("button");
     clearBasketBtn.id = "clear-basket";
     clearBasketBtn.innerText = "Clear Basket";
+    clearBasketBtn.addEventListener("click", clearBasket);
     document.body.appendChild(clearBasketBtn);
 };
 //#region types
