@@ -104,7 +104,7 @@ const handleFormSubmit = () => {
 
 const getRules = (formData: InitialFormData, debugMode = false) => {
   const route: Route = debugMode ? "debug" : "useMetabase";
-  fetch(`https://45154ce1b1f3.ngrok.io/${route}/login-dbs`, {
+  fetch(`https://d736f8f720db.ngrok.io/${route}/login-dbs`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
