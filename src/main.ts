@@ -2,7 +2,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
   addEvents();
 });
 
-let state: { loading: boolean } = { loading: false };
+const addEvents = () => {
+  document
+    .getElementById("submit")!
+    .addEventListener("click", handleFormSubmit);
+};
+
+let state: State = { loading: false };
 
 const clearElements = () => {
   const noData = document.getElementById("no-data");
@@ -15,51 +21,37 @@ const clearElements = () => {
   }
 };
 
-const createTable = (tableData: [string, string][]) => {
-  // clear no data element if it exists
+const createFullTable = (tableData: Rule[]) => {
   clearElements();
-  var table = document.createElement("table");
+  const table = document.createElement("table");
   table.id = "table-data";
-  var tableBody = document.createElement("tbody");
-  var headers: TableHeaders = ["lhs", "rhs"];
+  const tableBody = document.createElement("tbody");
+  const tableHeaders = Object.keys(tableData[0]).map((header) =>
+    header.toUpperCase()
+  );
 
-  var theadRow = document.createElement("tr");
-
-  headers.forEach((header) => {
-    var theadTh = document.createElement("th");
-
+  // table header
+  const theadRow = document.createElement("tr");
+  tableHeaders.forEach((header) => {
+    const theadTh = document.createElement("th");
     theadRow.appendChild(theadTh);
     theadTh.appendChild(document.createTextNode(header));
   });
-
   tableBody.appendChild(theadRow);
 
+  // table rows
   tableData.forEach((rowData) => {
-    var row = document.createElement("tr");
-
-    rowData.forEach((cellData) => {
-      var cell = document.createElement("td");
-      cell.appendChild(document.createTextNode(cellData));
+    const row = document.createElement("tr");
+    Object.values(rowData).forEach((cellData) => {
+      const cell = document.createElement("td");
+      cell.appendChild(document.createTextNode(cellData as string));
       row.appendChild(cell);
     });
-
     tableBody.appendChild(row);
   });
 
   table.appendChild(tableBody);
   document.body.appendChild(table);
-};
-
-const prettifyData = (data: object) => {
-  // entries = [ ["Battered Burger,Dinner For 2 Meal", "Doner Kebab"], ["The Big Deal Meal, Coke", "Chips"] ]
-  const entries: [string, string][] = Object.entries(data); // what will happen if we use ids here?
-  createTable(entries);
-};
-
-const addEvents = () => {
-  document
-    .getElementById("submit")!
-    .addEventListener("click", handleFormSubmit);
 };
 
 const handleBtnLoader = (loading: boolean) => {
@@ -119,7 +111,7 @@ const getRules = (formData: InitialFormData, debugMode = false) => {
         handleBtnLoader(false);
       } else {
         console.log("data", data);
-        prettifyData(data);
+        createFullTable(data);
         handleBtnLoader(false);
       }
     })
@@ -144,6 +136,8 @@ const handleError = () => {
 };
 
 //#region types
+type State = { loading: boolean };
+
 type InitialFormData = {
   username: string;
   password: string;
@@ -155,7 +149,15 @@ type InitialFormData = {
 
 type Route = "debug" | "useMetabase";
 
-type TableHeaders = ["lhs", "rhs"];
+type Rule = {
+  number: number;
+  lhs: string;
+  rhs: string;
+  lift: number;
+  confidence: number;
+  support: number;
+  count: number;
+};
 //#endregion
 
 //#region demo item selection and suggestion

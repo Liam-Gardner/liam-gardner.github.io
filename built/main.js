@@ -1,6 +1,11 @@
 window.addEventListener("DOMContentLoaded", function (event) {
     addEvents();
 });
+var addEvents = function () {
+    document
+        .getElementById("submit")
+        .addEventListener("click", handleFormSubmit);
+};
 var state = { loading: false };
 var clearElements = function () {
     var _a, _b;
@@ -13,23 +18,26 @@ var clearElements = function () {
         (_b = table.parentNode) === null || _b === void 0 ? void 0 : _b.removeChild(table);
     }
 };
-var createTable = function (tableData) {
-    // clear no data element if it exists
+var createFullTable = function (tableData) {
     clearElements();
     var table = document.createElement("table");
     table.id = "table-data";
     var tableBody = document.createElement("tbody");
-    var headers = ["lhs", "rhs"];
+    var tableHeaders = Object.keys(tableData[0]).map(function (header) {
+        return header.toUpperCase();
+    });
+    // table header
     var theadRow = document.createElement("tr");
-    headers.forEach(function (header) {
+    tableHeaders.forEach(function (header) {
         var theadTh = document.createElement("th");
         theadRow.appendChild(theadTh);
         theadTh.appendChild(document.createTextNode(header));
     });
     tableBody.appendChild(theadRow);
+    // table rows
     tableData.forEach(function (rowData) {
         var row = document.createElement("tr");
-        rowData.forEach(function (cellData) {
+        Object.values(rowData).forEach(function (cellData) {
             var cell = document.createElement("td");
             cell.appendChild(document.createTextNode(cellData));
             row.appendChild(cell);
@@ -38,16 +46,6 @@ var createTable = function (tableData) {
     });
     table.appendChild(tableBody);
     document.body.appendChild(table);
-};
-var prettifyData = function (data) {
-    // entries = [ ["Battered Burger,Dinner For 2 Meal", "Doner Kebab"], ["The Big Deal Meal, Coke", "Chips"] ]
-    var entries = Object.entries(data); // what will happen if we use ids here?
-    createTable(entries);
-};
-var addEvents = function () {
-    document
-        .getElementById("submit")
-        .addEventListener("click", handleFormSubmit);
 };
 var handleBtnLoader = function (loading) {
     var button = document.getElementById("submit");
@@ -105,7 +103,7 @@ var getRules = function (formData, debugMode) {
         }
         else {
             console.log("data", data);
-            prettifyData(data);
+            createFullTable(data);
             handleBtnLoader(false);
         }
     })

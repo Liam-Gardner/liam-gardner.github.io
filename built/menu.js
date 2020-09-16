@@ -61,7 +61,7 @@ var getRules2 = function (formData, debugMode) {
         }
         else {
             // console.log("data", data);
-            prettifyData(data);
+            createFullTable(data);
             handleBtnLoader(false);
         }
     })

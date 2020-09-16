@@ -42,7 +42,7 @@ const getRules2 = (formData: InitialFormData, debugMode = false) => {
         handleBtnLoader(false);
       } else {
         // console.log("data", data);
-        prettifyData(data);
+        createFullTable(data);
         handleBtnLoader(false);
       }
     })
