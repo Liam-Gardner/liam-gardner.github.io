@@ -105,13 +105,13 @@ const getRules = (formData: InitialFormData, debugMode = false) => {
   })
     .then((response) => response.json())
     // parses JSON response into native JavaScript objects
-    .then((data: any) => {
+    .then((data: MarketBasketResponse) => {
       if (data.errno) {
         handleError();
         handleBtnLoader(false);
       } else {
         console.log("data", data);
-        createFullTable(data);
+        createFullTable(data.rules);
         handleBtnLoader(false);
       }
     })
@@ -157,6 +157,14 @@ type Rule = {
   confidence: number;
   support: number;
   count: number;
+};
+
+type MarketBasketResponse = {
+  errno?: any;
+  rules: Rule[];
+  itemsBoughtPlot: string;
+  popularTimesPlot: string;
+  topTenBestSellersPlot: string;
 };
 //#endregion
 

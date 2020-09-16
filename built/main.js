@@ -103,7 +103,7 @@ var getRules = function (formData, debugMode) {
         }
         else {
             console.log("data", data);
-            createFullTable(data);
+            createFullTable(data.rules);
             handleBtnLoader(false);
         }
     })
