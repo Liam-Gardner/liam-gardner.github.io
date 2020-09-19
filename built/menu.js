@@ -42,35 +42,33 @@ var handleMenuBtnLoader = function (loading) {
         button.innerHTML = "Submit";
     }
 };
-var getRules2 = function (formData, debugMode) {
-    if (debugMode === void 0) { debugMode = false; }
-    var route = debugMode ? "debug" : "useMetabase";
-    fetch("https://d736f8f720db.ngrok.io/" + route + "/login-dbs", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-    })
-        .then(function (response) { return response.json(); })
-        // parses JSON response into native JavaScript objects
-        .then(function (data) {
-        if (data.errno) {
-            handleError();
-            handleBtnLoader(false);
-        }
-        else {
-            // console.log("data", data);
-            createFullTable(data);
-            handleBtnLoader(false);
-        }
-    })
-        .catch(function (err) {
-        console.log("apiCall error", err);
-        handleError();
-        handleBtnLoader(false);
-    });
-};
+// const getRules2 = (formData: InitialFormData, debugMode = false) => {
+//   const route: Route = debugMode ? "debug" : "useMetabase";
+//   fetch(`https://d736f8f720db.ngrok.io/${route}/login-dbs`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(formData),
+//   })
+//     .then((response) => response.json())
+//     // parses JSON response into native JavaScript objects
+//     .then((data: any) => {
+//       if (data.errno) {
+//         handleError();
+//         handleBtnLoader(false);
+//       } else {
+//         // console.log("data", data);
+//         createFullTable(data);
+//         handleBtnLoader(false);
+//       }
+//     })
+//     .catch((err) => {
+//       console.log("apiCall error", err);
+//       handleError();
+//       handleBtnLoader(false);
+//     });
+// };
 var handleMenuSubmit = function () {
     handleMenuBtnLoader(true);
     var storeId = document.getElementById("storeId").value;

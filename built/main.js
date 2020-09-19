@@ -1,3 +1,14 @@
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 window.addEventListener("DOMContentLoaded", function (event) {
     addEvents();
 });
@@ -7,6 +18,7 @@ var addEvents = function () {
         .addEventListener("click", handleFormSubmit);
 };
 var state = { loading: false };
+var BASE_URL = "https://d736f8f720db.ngrok.io";
 var clearElements = function () {
     var _a, _b;
     var noData = document.getElementById("no-data");
@@ -18,7 +30,7 @@ var clearElements = function () {
         (_b = table.parentNode) === null || _b === void 0 ? void 0 : _b.removeChild(table);
     }
 };
-var createFullTable = function (tableData) {
+var createFullTable = function (tableData, plots) {
     clearElements();
     var table = document.createElement("table");
     table.id = "table-data";
@@ -44,8 +56,30 @@ var createFullTable = function (tableData) {
         });
         tableBody.appendChild(row);
     });
+    // apend table to document
     table.appendChild(tableBody);
     document.body.appendChild(table);
+    // add pagination
+    if (table) {
+        addPagerToTable(table);
+    }
+    // create plots after table
+    createPlots(plots);
+};
+var createPlots = function (plots) {
+    var plotWrapper = document.createElement("div");
+    plotWrapper.id = "plot-wrapper";
+    plotWrapper.style.textAlign = "center";
+    Object.values(plots).forEach(function (plotSrc) {
+        var plotContainer = document.createElement("div");
+        var plot = document.createElement("img");
+        plot.style.width = "75%";
+        plot.style.marginTop = "72px";
+        plot.src = "" + BASE_URL + plotSrc;
+        plotContainer.append(plot);
+        plotWrapper.append(plotContainer);
+        document.body.append(plotWrapper);
+    });
 };
 var handleBtnLoader = function (loading) {
     var button = document.getElementById("submit");
@@ -87,7 +121,7 @@ var handleFormSubmit = function () {
 var getRules = function (formData, debugMode) {
     if (debugMode === void 0) { debugMode = false; }
     var route = debugMode ? "debug" : "useMetabase";
-    fetch("https://d736f8f720db.ngrok.io/" + route + "/login-dbs", {
+    fetch(BASE_URL + "/" + route + "/login-dbs", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -103,7 +137,13 @@ var getRules = function (formData, debugMode) {
         }
         else {
             console.log("data", data);
-            createFullTable(data.rules);
+            var rules = data.rules, itemsBoughtPlot = data.itemsBoughtPlot, popularTimesPlot = data.popularTimesPlot, topTenBestSellersPlot = data.topTenBestSellersPlot;
+            var plots = {
+                itemsBoughtPlot: itemsBoughtPlot,
+                popularTimesPlot: popularTimesPlot,
+                topTenBestSellersPlot: topTenBestSellersPlot,
+            };
+            createFullTable(rules, plots);
             handleBtnLoader(false);
         }
     })
@@ -124,12 +164,59 @@ var handleError = function () {
     noDataElement.id = "no-data";
     document.body.appendChild(noDataElement);
 };
-//#endregion
-//#region demo item selection and suggestion
-/*
-  1. List of menuitems - [Battered Burger,Dinner For 2 Meal,Doner Kebab]
-    - construct this from the response
-    - get unique entries
-    - or load the menu from metabase
-*/
-//#endregion
+//#region Pagination
+var addPagerToTable = function (table, rowsPerPage) {
+    var e_1, _a;
+    if (rowsPerPage === void 0) { rowsPerPage = 5; }
+    var tBodyRows = Array.from(table.querySelectorAll("tBody tr")).slice(1);
+    var numPages = Math.ceil(tBodyRows.length / rowsPerPage);
+    var colCount = [].slice
+        //@ts-ignore
+        .call(table.querySelector("tr").cells)
+        .reduce(function (a, b) { return a + parseInt(b.colSpan); }, 0);
+    table
+        .createTFoot()
+        .insertRow().innerHTML = "<td colspan=" + colCount + "><div class=\"nav\"></div></td>";
+    if (numPages == 1)
+        return;
+    for (var i = 0; i < numPages; i++) {
+        var pageNum = i + 1;
+        //@ts-ignore
+        table
+            .querySelector(".nav")
+            .insertAdjacentHTML("beforeend", "<a href=\"#\" rel=\"" + i + "\">" + pageNum + "</a> ");
+    }
+    changeToPage(table, 1, rowsPerPage);
+    try {
+        //@ts-ignore
+        for (var _b = __values(table.querySelectorAll(".nav a")), _c = _b.next(); !_c.done; _c = _b.next()) {
+            var navA = _c.value;
+            navA.addEventListener("click", function (e) {
+                e.preventDefault();
+                changeToPage(table, parseInt(e.target.innerHTML), rowsPerPage);
+            });
+        }
+    }
+    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+    finally {
+        try {
+            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_1) throw e_1.error; }
+    }
+};
+var changeToPage = function (table, page, rowsPerPage) {
+    var startItem = (page - 1) * rowsPerPage;
+    var endItem = startItem + rowsPerPage;
+    var navAs = table.querySelectorAll(".nav a");
+    var tBodyRows = Array.from(table.querySelectorAll("tBody tr")).slice(1);
+    for (var nix = 0; nix < navAs.length; nix++) {
+        if (nix == page - 1)
+            navAs[nix].classList.add("active");
+        else
+            navAs[nix].classList.remove("active");
+        for (var trix = 0; trix < tBodyRows.length; trix++)
+            tBodyRows[trix].style.display =
+                trix >= startItem && trix < endItem ? "table-row" : "none";
+    }
+};

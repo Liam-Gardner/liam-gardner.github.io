@@ -25,33 +25,33 @@ const handleMenuBtnLoader = (loading: boolean) => {
   }
 };
 
-const getRules2 = (formData: InitialFormData, debugMode = false) => {
-  const route: Route = debugMode ? "debug" : "useMetabase";
-  fetch(`https://d736f8f720db.ngrok.io/${route}/login-dbs`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  })
-    .then((response) => response.json())
-    // parses JSON response into native JavaScript objects
-    .then((data: any) => {
-      if (data.errno) {
-        handleError();
-        handleBtnLoader(false);
-      } else {
-        // console.log("data", data);
-        createFullTable(data);
-        handleBtnLoader(false);
-      }
-    })
-    .catch((err) => {
-      console.log("apiCall error", err);
-      handleError();
-      handleBtnLoader(false);
-    });
-};
+// const getRules2 = (formData: InitialFormData, debugMode = false) => {
+//   const route: Route = debugMode ? "debug" : "useMetabase";
+//   fetch(`https://d736f8f720db.ngrok.io/${route}/login-dbs`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(formData),
+//   })
+//     .then((response) => response.json())
+//     // parses JSON response into native JavaScript objects
+//     .then((data: any) => {
+//       if (data.errno) {
+//         handleError();
+//         handleBtnLoader(false);
+//       } else {
+//         // console.log("data", data);
+//         createFullTable(data);
+//         handleBtnLoader(false);
+//       }
+//     })
+//     .catch((err) => {
+//       console.log("apiCall error", err);
+//       handleError();
+//       handleBtnLoader(false);
+//     });
+// };
 
 const handleMenuSubmit = () => {
   handleMenuBtnLoader(true);

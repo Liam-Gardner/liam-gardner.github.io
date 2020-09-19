@@ -9,6 +9,7 @@ const addEvents = () => {
 };
 
 let state: State = { loading: false };
+const BASE_URL = "https://d736f8f720db.ngrok.io";
 
 const clearElements = () => {
   const noData = document.getElementById("no-data");
@@ -21,7 +22,7 @@ const clearElements = () => {
   }
 };
 
-const createFullTable = (tableData: Rule[]) => {
+const createFullTable = (tableData: Rule[], plots: Plots) => {
   clearElements();
   const table = document.createElement("table");
   table.id = "table-data";
@@ -50,8 +51,35 @@ const createFullTable = (tableData: Rule[]) => {
     tableBody.appendChild(row);
   });
 
+  // apend table to document
   table.appendChild(tableBody);
   document.body.appendChild(table);
+
+  // add pagination
+  if (table) {
+    addPagerToTable(table);
+  }
+
+  // create plots after table
+  createPlots(plots);
+};
+
+const createPlots = (plots: Plots) => {
+  const plotWrapper = document.createElement("div");
+  plotWrapper.id = "plot-wrapper";
+  plotWrapper.style.textAlign = "center";
+
+  Object.values(plots).forEach((plotSrc) => {
+    const plotContainer = document.createElement("div");
+    const plot = document.createElement("img");
+    plot.style.width = "75%";
+    plot.style.marginTop = "72px";
+    plot.src = `${BASE_URL}${plotSrc}`;
+
+    plotContainer.append(plot);
+    plotWrapper.append(plotContainer);
+    document.body.append(plotWrapper);
+  });
 };
 
 const handleBtnLoader = (loading: boolean) => {
@@ -96,7 +124,7 @@ const handleFormSubmit = () => {
 
 const getRules = (formData: InitialFormData, debugMode = false) => {
   const route: Route = debugMode ? "debug" : "useMetabase";
-  fetch(`https://d736f8f720db.ngrok.io/${route}/login-dbs`, {
+  fetch(`${BASE_URL}/${route}/login-dbs`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -111,7 +139,18 @@ const getRules = (formData: InitialFormData, debugMode = false) => {
         handleBtnLoader(false);
       } else {
         console.log("data", data);
-        createFullTable(data.rules);
+        const {
+          rules,
+          itemsBoughtPlot,
+          popularTimesPlot,
+          topTenBestSellersPlot,
+        } = data;
+        const plots = {
+          itemsBoughtPlot,
+          popularTimesPlot,
+          topTenBestSellersPlot,
+        };
+        createFullTable(rules, plots);
         handleBtnLoader(false);
       }
     })
@@ -135,6 +174,62 @@ const handleError = () => {
   document.body.appendChild(noDataElement);
 };
 
+//#region Pagination
+const addPagerToTable = (table: HTMLTableElement, rowsPerPage = 5) => {
+  let tBodyRows = Array.from(table.querySelectorAll("tBody tr")).slice(1);
+  let numPages = Math.ceil(tBodyRows.length / rowsPerPage);
+
+  let colCount = [].slice
+    //@ts-ignore
+    .call(table.querySelector("tr").cells)
+    .reduce((a, b) => a + parseInt(b.colSpan), 0);
+
+  table
+    .createTFoot()
+    .insertRow().innerHTML = `<td colspan=${colCount}><div class="nav"></div></td>`;
+
+  if (numPages == 1) return;
+
+  for (let i = 0; i < numPages; i++) {
+    let pageNum = i + 1;
+    //@ts-ignore
+    table
+      .querySelector(".nav")
+      .insertAdjacentHTML(
+        "beforeend",
+        `<a href="#" rel="${i}">${pageNum}</a> `
+      );
+  }
+
+  changeToPage(table, 1, rowsPerPage);
+
+  //@ts-ignore
+  for (let navA of table.querySelectorAll(".nav a"))
+    navA.addEventListener("click", (e) => {
+      e.preventDefault();
+      changeToPage(table, parseInt(e.target.innerHTML), rowsPerPage);
+    });
+};
+
+const changeToPage = (table, page, rowsPerPage) => {
+  let startItem = (page - 1) * rowsPerPage;
+  let endItem = startItem + rowsPerPage;
+  let navAs = table.querySelectorAll(".nav a");
+  let tBodyRows = Array.from<HTMLElement>(
+    table.querySelectorAll("tBody tr")
+  ).slice(1);
+
+  for (let nix = 0; nix < navAs.length; nix++) {
+    if (nix == page - 1) navAs[nix].classList.add("active");
+    else navAs[nix].classList.remove("active");
+
+    for (let trix = 0; trix < tBodyRows.length; trix++)
+      tBodyRows[trix].style.display =
+        trix >= startItem && trix < endItem ? "table-row" : "none";
+  }
+};
+
+//#endregion
 //#region types
 type State = { loading: boolean };
 
@@ -149,6 +244,14 @@ type InitialFormData = {
 
 type Route = "debug" | "useMetabase";
 
+type MarketBasketResponse = {
+  errno?: any;
+  rules: Rule[];
+  itemsBoughtPlot: string;
+  popularTimesPlot: string;
+  topTenBestSellersPlot: string;
+};
+
 type Rule = {
   number: number;
   lhs: string;
@@ -159,21 +262,8 @@ type Rule = {
   count: number;
 };
 
-type MarketBasketResponse = {
-  errno?: any;
-  rules: Rule[];
+type Plots = {
   itemsBoughtPlot: string;
   popularTimesPlot: string;
   topTenBestSellersPlot: string;
 };
-//#endregion
-
-//#region demo item selection and suggestion
-/*
-  1. List of menuitems - [Battered Burger,Dinner For 2 Meal,Doner Kebab]
-    - construct this from the response
-    - get unique entries 
-    - or load the menu from metabase
-*/
-
-//#endregion
