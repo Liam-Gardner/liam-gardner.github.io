@@ -108,7 +108,8 @@ const handleFormSubmit = () => {
     .value;
   let byItemName = (<HTMLInputElement>document.getElementById("byItemName"))
     .value;
-  let debugMode = (<HTMLInputElement>document.getElementById("debug")).checked;
+  // let debugMode = (<HTMLInputElement>document.getElementById("debug")).checked;
+  let debugMode = false;
 
   const formData: InitialFormData = {
     username,
