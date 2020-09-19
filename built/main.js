@@ -107,7 +107,8 @@ var handleFormSubmit = function () {
         .value;
     var byItemName = document.getElementById("byItemName")
         .value;
-    var debugMode = document.getElementById("debug").checked;
+    // let debugMode = (<HTMLInputElement>document.getElementById("debug")).checked;
+    var debugMode = false;
     var formData = {
         username: username,
         password: password,
