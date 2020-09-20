@@ -20,6 +20,10 @@ const clearElements = () => {
   if (table) {
     table.parentNode?.removeChild(table);
   }
+  const plots = document.getElementById("plot-wrapper");
+  if (plots) {
+    plots.parentNode?.removeChild(plots);
+  }
 };
 
 const createFullTable = (tableData: Rule[], plots: Plots) => {
@@ -187,7 +191,7 @@ const addPagerToTable = (table: HTMLTableElement, rowsPerPage = 5) => {
 
   table
     .createTFoot()
-    .insertRow().innerHTML = `<td colspan=${colCount}><div class="nav"></div></td>`;
+    .insertRow().innerHTML = `<td colspan=${colCount}><div class="nav" style="text-align: center"></div></td>`;
 
   if (numPages == 1) return;
 
@@ -198,7 +202,7 @@ const addPagerToTable = (table: HTMLTableElement, rowsPerPage = 5) => {
       .querySelector(".nav")
       .insertAdjacentHTML(
         "beforeend",
-        `<a href="#" rel="${i}">${pageNum}</a> `
+        `<a href="#" style="text-decoration: none" rel="${i}">${pageNum}</a> `
       );
   }
 

@@ -20,7 +20,7 @@ var addEvents = function () {
 var state = { loading: false };
 var BASE_URL = "https://d736f8f720db.ngrok.io";
 var clearElements = function () {
-    var _a, _b;
+    var _a, _b, _c;
     var noData = document.getElementById("no-data");
     if (noData) {
         (_a = noData.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(noData);
@@ -28,6 +28,10 @@ var clearElements = function () {
     var table = document.getElementById("table-data");
     if (table) {
         (_b = table.parentNode) === null || _b === void 0 ? void 0 : _b.removeChild(table);
+    }
+    var plots = document.getElementById("plot-wrapper");
+    if (plots) {
+        (_c = plots.parentNode) === null || _c === void 0 ? void 0 : _c.removeChild(plots);
     }
 };
 var createFullTable = function (tableData, plots) {
@@ -177,7 +181,7 @@ var addPagerToTable = function (table, rowsPerPage) {
         .reduce(function (a, b) { return a + parseInt(b.colSpan); }, 0);
     table
         .createTFoot()
-        .insertRow().innerHTML = "<td colspan=" + colCount + "><div class=\"nav\"></div></td>";
+        .insertRow().innerHTML = "<td colspan=" + colCount + "><div class=\"nav\" style=\"text-align: center\"></div></td>";
     if (numPages == 1)
         return;
     for (var i = 0; i < numPages; i++) {
@@ -185,7 +189,7 @@ var addPagerToTable = function (table, rowsPerPage) {
         //@ts-ignore
         table
             .querySelector(".nav")
-            .insertAdjacentHTML("beforeend", "<a href=\"#\" rel=\"" + i + "\">" + pageNum + "</a> ");
+            .insertAdjacentHTML("beforeend", "<a href=\"#\" style=\"text-decoration: none\" rel=\"" + i + "\">" + pageNum + "</a> ");
     }
     changeToPage(table, 1, rowsPerPage);
     try {
