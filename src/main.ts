@@ -28,8 +28,19 @@ const clearElements = () => {
 
 const createFullTable = (tableData: Rule[], plots: Plots) => {
   clearElements();
+
+  // create table
   const table = document.createElement("table");
   table.id = "table-data";
+
+  // create caption
+  const caption = document.createElement("caption");
+  caption.style.textAlign = "left";
+  caption.style.fontSize = "24px";
+  caption.style.padding = "8px";
+  caption.innerText = "Association Rules";
+
+  // create table body
   const tableBody = document.createElement("tbody");
   const tableHeaders = Object.keys(tableData[0]).map((header) =>
     header.toUpperCase()
@@ -47,8 +58,11 @@ const createFullTable = (tableData: Rule[], plots: Plots) => {
   // table rows
   tableData.forEach((rowData) => {
     const row = document.createElement("tr");
-    Object.values(rowData).forEach((cellData) => {
+    Object.values(rowData).forEach((cellData, index) => {
       const cell = document.createElement("td");
+      if (index == 0 || index > 2) {
+        cell.style.textAlign = "right";
+      }
       cell.appendChild(document.createTextNode(cellData as string));
       row.appendChild(cell);
     });
@@ -56,6 +70,7 @@ const createFullTable = (tableData: Rule[], plots: Plots) => {
   });
 
   // apend table to document
+  table.appendChild(caption);
   table.appendChild(tableBody);
   document.body.appendChild(table);
 
@@ -191,7 +206,7 @@ const addPagerToTable = (table: HTMLTableElement, rowsPerPage = 5) => {
 
   table
     .createTFoot()
-    .insertRow().innerHTML = `<td colspan=${colCount}><div class="nav" style="text-align: center"></div></td>`;
+    .insertRow().innerHTML = `<td colspan=${colCount}><div class="nav" style="text-align: right">Pages: </div></td>`;
 
   if (numPages == 1) return;
 
