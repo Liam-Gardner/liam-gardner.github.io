@@ -36,8 +36,16 @@ var clearElements = function () {
 };
 var createFullTable = function (tableData, plots) {
     clearElements();
+    // create table
     var table = document.createElement("table");
     table.id = "table-data";
+    // create caption
+    var caption = document.createElement("caption");
+    caption.style.textAlign = "left";
+    caption.style.fontSize = "24px";
+    caption.style.padding = "8px";
+    caption.innerText = "Association Rules";
+    // create table body
     var tableBody = document.createElement("tbody");
     var tableHeaders = Object.keys(tableData[0]).map(function (header) {
         return header.toUpperCase();
@@ -53,14 +61,18 @@ var createFullTable = function (tableData, plots) {
     // table rows
     tableData.forEach(function (rowData) {
         var row = document.createElement("tr");
-        Object.values(rowData).forEach(function (cellData) {
+        Object.values(rowData).forEach(function (cellData, index) {
             var cell = document.createElement("td");
+            if (index == 0 || index > 2) {
+                cell.style.textAlign = "right";
+            }
             cell.appendChild(document.createTextNode(cellData));
             row.appendChild(cell);
         });
         tableBody.appendChild(row);
     });
     // apend table to document
+    table.appendChild(caption);
     table.appendChild(tableBody);
     document.body.appendChild(table);
     // add pagination
@@ -181,7 +193,7 @@ var addPagerToTable = function (table, rowsPerPage) {
         .reduce(function (a, b) { return a + parseInt(b.colSpan); }, 0);
     table
         .createTFoot()
-        .insertRow().innerHTML = "<td colspan=" + colCount + "><div class=\"nav\" style=\"text-align: center\"></div></td>";
+        .insertRow().innerHTML = "<td colspan=" + colCount + "><div class=\"nav\" style=\"text-align: right\">Pages: </div></td>";
     if (numPages == 1)
         return;
     for (var i = 0; i < numPages; i++) {
