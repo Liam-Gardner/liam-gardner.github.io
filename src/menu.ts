@@ -138,7 +138,7 @@ const clearSuggestedItems = () => {
 const checkRules = (basketState: string[]) => {
   // this should be extracted and done once, when the rules are returned from api
   const lhs = Object.keys(dummyRules);
-  const isRule = lhs.includes(basketState.toString().toUpperCase());
+  const isRule = lhs.includes(basketState.toString());
   createSuggestedBar(isRule);
   console.log(isRule);
 };
@@ -173,7 +173,7 @@ const createMenuItems = (menu: string[]) => {
     let menuItem = document.createElement("button");
     menuItem.className = "menuItem";
     menuItem.innerHTML = item;
-    menuItem.addEventListener("click", () => addToBasket(menuItem.innerText));
+    menuItem.addEventListener("click", () => addToBasket(menuItem.innerHTML));
     menuItemContainer.appendChild(menuItem);
   });
 };
