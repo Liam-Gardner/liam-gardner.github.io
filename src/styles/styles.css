@@ -169,7 +169,7 @@ p#no-data {
   font-family: "Red Hat Text", sans-serif;
 }
 .menuItem:hover {
-  background: "#ed1c24";
+  background-color: "#ed1c24";
   color: #fff;
 }
 

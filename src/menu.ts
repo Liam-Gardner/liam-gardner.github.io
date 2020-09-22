@@ -138,7 +138,7 @@ const clearSuggestedItems = () => {
 const checkRules = (basketState: string[]) => {
   // this should be extracted and done once, when the rules are returned from api
   const lhs = Object.keys(dummyRules);
-  const isRule = lhs.includes(basketState.toString());
+  const isRule = lhs.includes(basketState.toString().toUpperCase());
   createSuggestedBar(isRule);
   console.log(isRule);
 };

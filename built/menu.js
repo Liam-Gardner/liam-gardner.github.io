@@ -142,7 +142,7 @@ var clearSuggestedItems = function () {
 var checkRules = function (basketState) {
     // this should be extracted and done once, when the rules are returned from api
     var lhs = Object.keys(dummyRules);
-    var isRule = lhs.includes(basketState.toString());
+    var isRule = lhs.includes(basketState.toString().toUpperCase());
     createSuggestedBar(isRule);
     console.log(isRule);
 };
