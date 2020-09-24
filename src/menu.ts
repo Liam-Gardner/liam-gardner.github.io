@@ -88,7 +88,7 @@ const createSuggestedBar = (rhs: string) => {
     suggestedItemBtn.innerText = `${rhs}`;
     suggestedItemBtn.className = "suggestedItemBtn menuItem";
     suggestedItemBtn.addEventListener("click", () =>
-      addToBasket(suggestedItemBtn.innerText)
+      addToBasket(suggestedItemBtn.innerHTML)
     );
 
     if (stickyBar) {

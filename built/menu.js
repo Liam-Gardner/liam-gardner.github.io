@@ -96,7 +96,7 @@ var createSuggestedBar = function (rhs) {
         suggestedItemBtn_1.innerText = "" + rhs;
         suggestedItemBtn_1.className = "suggestedItemBtn menuItem";
         suggestedItemBtn_1.addEventListener("click", function () {
-            return addToBasket(suggestedItemBtn_1.innerText);
+            return addToBasket(suggestedItemBtn_1.innerHTML);
         });
         if (stickyBar) {
             stickyBar.style.display = "block";
