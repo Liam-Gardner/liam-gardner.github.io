@@ -184,6 +184,7 @@ p#no-data {
   width: 66.66667%;
   display: inline-block;
   padding-right: 32px;
+  padding-left: 16px;
 }
 
 .menuItem {
@@ -208,6 +209,7 @@ p#no-data {
 }
 
 #suggestedBar {
+  font-family: "Red Hat Text", sans-serif;
   display: none;
   position: fixed;
   left: 0;
