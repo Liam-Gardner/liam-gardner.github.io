@@ -12,7 +12,9 @@ const createRulesToTry = () => {
 
   top5Rules.forEach((rule) => {
     let p = document.createElement("p");
-    p.innerText = Object.entries(rule).join().replace(",", " => ");
+    let lhs = Object.keys(rule).join();
+    let rhs = Object.values(rule).join();
+    p.innerText = `${lhs} => ${rhs}`;
     rulesContainer!.appendChild(p);
   });
 };

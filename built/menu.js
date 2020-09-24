@@ -29,7 +29,9 @@ var createRulesToTry = function () {
     var rulesContainer = document.getElementById("rulesToTry");
     top5Rules.forEach(function (rule) {
         var p = document.createElement("p");
-        p.innerText = Object.entries(rule).join().replace(",", " => ");
+        var lhs = Object.keys(rule).join();
+        var rhs = Object.values(rule).join();
+        p.innerText = lhs + " => " + rhs;
         rulesContainer.appendChild(p);
     });
 };
