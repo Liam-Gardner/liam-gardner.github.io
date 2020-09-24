@@ -19,69 +19,25 @@ var __spread = (this && this.__spread) || function () {
     return ar;
 };
 window.addEventListener("DOMContentLoaded", function (event) {
-    addMenuEvents();
+    getMenuItems();
+    createRulesToTry();
 });
-var menuState = { loading: false };
-var addMenuEvents = function () {
-    document
-        .getElementById("submit-menu")
-        .addEventListener("click", handleMenuSubmit);
+var parsedRules = JSON.parse(localStorage.rules);
+var basketState = [];
+var createRulesToTry = function () {
+    var top5Rules = parsedRules.slice(0, 5);
+    var rulesContainer = document.getElementById("rulesToTry");
+    top5Rules.forEach(function (rule) {
+        var p = document.createElement("p");
+        p.innerText = Object.entries(rule).join().replace(",", " => ");
+        rulesContainer.appendChild(p);
+    });
 };
-var handleMenuBtnLoader = function (loading) {
-    var button = document.getElementById("submit-menu");
-    menuState.loading = loading;
-    if (menuState.loading && button) {
-        button.setAttribute("disabled", "true");
-        button.innerHTML =
-            '<i id="menu-loader-btn" class="fa fa-circle-o-notch fa-spin"></i> Loading';
-        document.getElementById("menu-loader-btn").style.display = "inline-block";
-    }
-    else if (!menuState.loading && button) {
-        button.removeAttribute("disabled");
-        // menuState.loading = false; // not needed?
-        button.innerHTML = "Submit";
-    }
-};
-// const getRules2 = (formData: InitialFormData, debugMode = false) => {
-//   const route: Route = debugMode ? "debug" : "useMetabase";
-//   fetch(`https://d736f8f720db.ngrok.io/${route}/login-dbs`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(formData),
-//   })
-//     .then((response) => response.json())
-//     // parses JSON response into native JavaScript objects
-//     .then((data: any) => {
-//       if (data.errno) {
-//         handleError();
-//         handleBtnLoader(false);
-//       } else {
-//         // console.log("data", data);
-//         createFullTable(data);
-//         handleBtnLoader(false);
-//       }
-//     })
-//     .catch((err) => {
-//       console.log("apiCall error", err);
-//       handleError();
-//       handleBtnLoader(false);
-//     });
-// };
-var handleMenuSubmit = function () {
-    handleMenuBtnLoader(true);
-    var storeId = document.getElementById("storeId").value;
-    var username = document.getElementById("name").value;
-    var password = document.getElementById("password").value;
-    var formData = { storeId: storeId, username: username, password: password };
-    getMenuItems(formData);
-};
-var getMenuItems = function (formData) {
-    //#region dummy data
-    // createMenuItems(dummyMenu);
-    // handleMenuBtnLoader(false);
-    //#endregion
+var getMenuItems = function () {
+    var username = localStorage.getItem("username");
+    var password = localStorage.getItem("password");
+    var storeId = localStorage.getItem("storeId");
+    var formData = { username: username, password: password, storeId: storeId };
     fetch("https://d736f8f720db.ngrok.io/useMetabase/login-dbs-demo", {
         method: "POST",
         headers: {
@@ -92,32 +48,20 @@ var getMenuItems = function (formData) {
         .then(function (response) { return response.json(); })
         .then(function (data) {
         if (data.errno) {
-            handleError2(); // probably need handler for menu - this is the table rules one
-            handleMenuBtnLoader(false);
+            handleErrorMenu();
         }
         else {
             createMenuItems(data);
-            handleMenuBtnLoader(false);
         }
     })
         .catch(function (err) {
         console.log("apiCall error", err);
-        handleError2();
-        handleMenuBtnLoader(false);
+        handleErrorMenu();
     });
 };
-var handleError2 = function () {
-    var _a;
-    var table = document.getElementById("table-data");
-    if (table) {
-        (_a = table.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(table);
-    }
-    var noDataElement = document.createElement("p");
-    noDataElement.innerHTML = "No data available";
-    noDataElement.id = "no-data";
-    document.body.appendChild(noDataElement);
+var handleErrorMenu = function () {
+    console.log("error loading menu!");
 };
-var basketState = [];
 var addToBasket = function (menuItem) {
     basketState = [__spread(basketState, [menuItem]).join(",")];
     createBasketView();
@@ -137,16 +81,14 @@ var clearSuggestedItems = function () {
     suggestedBar.style.display = "none";
 };
 var checkRules = function (basketState) {
-    // this should be extracted and done once, when the rules are returned from api
-    var lhs = Object.keys(dummyRules);
-    var isRule = lhs.includes(basketState.toString());
-    createSuggestedBar(isRule);
-    console.log(isRule);
+    var check = parsedRules.find(function (r) { return r[basketState.toString()]; });
+    if (check) {
+        createSuggestedBar(Object.values(check).toString());
+    }
 };
-var createSuggestedBar = function (isRule) {
-    if (isRule) {
+var createSuggestedBar = function (rhs) {
+    if (rhs) {
         var stickyBar = document.getElementById("suggestedBar");
-        var rhs = dummyRules[basketState.toString()];
         var suggestedItemBtn_1 = document.createElement("button");
         suggestedItemBtn_1.innerText = "" + rhs;
         suggestedItemBtn_1.className = "suggestedItemBtn";
@@ -267,6 +209,7 @@ var dummyMenu = [
     "Chip Baguette & Drink",
     "Dinner Box",
 ];
+var dummyRules2 = '[{ "Doner Kebab,The Big Deal Meal": "The Big Deal Meal" },{ "Curry Sauce,Fresh Cod,Smoked Cod": "Large Chips" }]';
 var dummyRules = {
     "Battered Burger,Dinner For 2 Meal,Doner Kebab": "The Big Deal Meal",
     "Battered Burger,Dinner For 2 Meal,Southern Fried Chicken Kebab Tray": "The Big Deal Meal",

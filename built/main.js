@@ -153,6 +153,9 @@ var getRules = function (formData, debugMode) {
             handleBtnLoader(false);
         }
         else {
+            localStorage.setItem("username", formData.username);
+            localStorage.setItem("password", formData.password);
+            localStorage.setItem("storeId", formData.storeId);
             console.log("data", data);
             var rules = data.rules, itemsBoughtPlot = data.itemsBoughtPlot, popularTimesPlot = data.popularTimesPlot, topTenBestSellersPlot = data.topTenBestSellersPlot;
             var plots = {
@@ -162,6 +165,7 @@ var getRules = function (formData, debugMode) {
             };
             createFullTable(rules, plots);
             handleBtnLoader(false);
+            setRulesInStorage(rules);
         }
     })
         .catch(function (err) {
@@ -169,6 +173,13 @@ var getRules = function (formData, debugMode) {
         handleError();
         handleBtnLoader(false);
     });
+};
+var setRulesInStorage = function (rules) {
+    var ruleList = JSON.stringify(rules.map(function (r) {
+        var _a;
+        return _a = {}, _a[r.lhs] = r.rhs, _a;
+    }));
+    localStorage.setItem("rules", ruleList);
 };
 var handleError = function () {
     var _a;

@@ -158,6 +158,10 @@ const getRules = (formData: InitialFormData, debugMode = false) => {
         handleError();
         handleBtnLoader(false);
       } else {
+        localStorage.setItem("username", formData.username);
+        localStorage.setItem("password", formData.password);
+        localStorage.setItem("storeId", formData.storeId);
+
         console.log("data", data);
         const {
           rules,
@@ -172,6 +176,7 @@ const getRules = (formData: InitialFormData, debugMode = false) => {
         };
         createFullTable(rules, plots);
         handleBtnLoader(false);
+        setRulesInStorage(rules);
       }
     })
     .catch((err) => {
@@ -179,6 +184,15 @@ const getRules = (formData: InitialFormData, debugMode = false) => {
       handleError();
       handleBtnLoader(false);
     });
+};
+
+const setRulesInStorage = (rules: Rule[]) => {
+  const ruleList = JSON.stringify(
+    rules.map((r) => {
+      return { [r.lhs]: r.rhs };
+    })
+  );
+  localStorage.setItem("rules", ruleList);
 };
 
 const handleError = () => {

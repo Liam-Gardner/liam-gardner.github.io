@@ -1,77 +1,29 @@
 window.addEventListener("DOMContentLoaded", (event) => {
-  addMenuEvents();
+  getMenuItems();
+  createRulesToTry();
 });
 
-let menuState: { loading: boolean } = { loading: false };
+const parsedRules: { [key: string]: string }[] = JSON.parse(localStorage.rules);
+let basketState: string[] = [];
 
-const addMenuEvents = () => {
-  document
-    .getElementById("submit-menu")!
-    .addEventListener("click", handleMenuSubmit);
+const createRulesToTry = () => {
+  const top5Rules = parsedRules.slice(0, 5);
+  const rulesContainer = document.getElementById("rulesToTry");
+
+  top5Rules.forEach((rule) => {
+    let p = document.createElement("p");
+    p.innerText = Object.entries(rule).join().replace(",", " => ");
+    rulesContainer!.appendChild(p);
+  });
 };
 
-const handleMenuBtnLoader = (loading: boolean) => {
-  const button = document.getElementById("submit-menu");
-  menuState.loading = loading;
-  if (menuState.loading && button) {
-    button.setAttribute("disabled", "true");
-    button.innerHTML =
-      '<i id="menu-loader-btn" class="fa fa-circle-o-notch fa-spin"></i> Loading';
-    document.getElementById("menu-loader-btn")!.style.display = "inline-block";
-  } else if (!menuState.loading && button) {
-    button.removeAttribute("disabled");
-    // menuState.loading = false; // not needed?
-    button.innerHTML = "Submit";
-  }
-};
+const getMenuItems = () => {
+  const username = localStorage.getItem("username");
+  const password = localStorage.getItem("password");
+  const storeId = localStorage.getItem("storeId");
 
-// const getRules2 = (formData: InitialFormData, debugMode = false) => {
-//   const route: Route = debugMode ? "debug" : "useMetabase";
-//   fetch(`https://d736f8f720db.ngrok.io/${route}/login-dbs`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(formData),
-//   })
-//     .then((response) => response.json())
-//     // parses JSON response into native JavaScript objects
-//     .then((data: any) => {
-//       if (data.errno) {
-//         handleError();
-//         handleBtnLoader(false);
-//       } else {
-//         // console.log("data", data);
-//         createFullTable(data);
-//         handleBtnLoader(false);
-//       }
-//     })
-//     .catch((err) => {
-//       console.log("apiCall error", err);
-//       handleError();
-//       handleBtnLoader(false);
-//     });
-// };
+  const formData = { username, password, storeId };
 
-const handleMenuSubmit = () => {
-  handleMenuBtnLoader(true);
-  let storeId = (<HTMLInputElement>document.getElementById("storeId")).value;
-  let username = (<HTMLInputElement>document.getElementById("name")).value;
-  let password = (<HTMLInputElement>document.getElementById("password")).value;
-  const formData = { storeId, username, password };
-
-  getMenuItems(formData);
-};
-
-const getMenuItems = (formData: {
-  storeId: string;
-  username: string;
-  password: string;
-}) => {
-  //#region dummy data
-  // createMenuItems(dummyMenu);
-  // handleMenuBtnLoader(false);
-  //#endregion
   fetch(`https://d736f8f720db.ngrok.io/useMetabase/login-dbs-demo`, {
     method: "POST",
     headers: {
@@ -82,34 +34,21 @@ const getMenuItems = (formData: {
     .then((response) => response.json())
     .then((data: any) => {
       if (data.errno) {
-        handleError2(); // probably need handler for menu - this is the table rules one
-        handleMenuBtnLoader(false);
+        handleErrorMenu();
       } else {
         createMenuItems(data);
-        handleMenuBtnLoader(false);
       }
     })
     .catch((err) => {
       console.log("apiCall error", err);
-      handleError2();
-      handleMenuBtnLoader(false);
+      handleErrorMenu();
     });
 };
 
-const handleError2 = () => {
-  const table = document.getElementById("table-data");
-  if (table) {
-    table.parentNode?.removeChild(table);
-  }
-
-  const noDataElement = document.createElement("p");
-  noDataElement.innerHTML = "No data available";
-  noDataElement.id = "no-data";
-
-  document.body.appendChild(noDataElement);
+const handleErrorMenu = () => {
+  console.log("error loading menu!");
 };
 
-let basketState: string[] = [];
 const addToBasket = (menuItem: string) => {
   basketState = [[...basketState, menuItem].join(",")];
   createBasketView();
@@ -132,18 +71,15 @@ const clearSuggestedItems = () => {
 };
 
 const checkRules = (basketState: string[]) => {
-  // this should be extracted and done once, when the rules are returned from api
-  const lhs = Object.keys(dummyRules);
-  const isRule = lhs.includes(basketState.toString());
-  createSuggestedBar(isRule);
-  console.log(isRule);
+  const check = parsedRules.find((r) => r[basketState.toString()]);
+  if (check) {
+    createSuggestedBar(Object.values(check).toString());
+  }
 };
 
-const createSuggestedBar = (isRule: boolean) => {
-  if (isRule) {
+const createSuggestedBar = (rhs: string) => {
+  if (rhs) {
     const stickyBar = document.getElementById("suggestedBar");
-
-    const rhs = dummyRules[basketState.toString()];
 
     const suggestedItemBtn = document.createElement("button");
     suggestedItemBtn.innerText = `${rhs}`;
@@ -272,6 +208,8 @@ const dummyMenu = [
   "Chip Baguette & Drink",
   "Dinner Box",
 ];
+const dummyRules2 =
+  '[{ "Doner Kebab,The Big Deal Meal": "The Big Deal Meal" },{ "Curry Sauce,Fresh Cod,Smoked Cod": "Large Chips" }]';
 
 const dummyRules = {
   "Battered Burger,Dinner For 2 Meal,Doner Kebab": "The Big Deal Meal",
