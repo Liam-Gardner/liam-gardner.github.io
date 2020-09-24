@@ -52,6 +52,7 @@ const handleErrorMenu = () => {
 };
 
 const addToBasket = (menuItem: string) => {
+  clearSuggestedItems();
   basketState = [[...basketState, menuItem].join(",")];
   createBasketView();
   checkRules(basketState);
@@ -85,7 +86,7 @@ const createSuggestedBar = (rhs: string) => {
 
     const suggestedItemBtn = document.createElement("button");
     suggestedItemBtn.innerText = `${rhs}`;
-    suggestedItemBtn.className = "suggestedItemBtn";
+    suggestedItemBtn.className = "suggestedItemBtn menuItem";
     suggestedItemBtn.addEventListener("click", () =>
       addToBasket(suggestedItemBtn.innerText)
     );

@@ -2,9 +2,39 @@ body {
   font-family: sans-serif;
   padding: 16px 64px 64px 64px;
 }
-nav {
-  padding: 16px 0 0 16px;
+
+/* NAV */
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #e7e7e7;
+  background-color: #f3f3f3;
 }
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: #666;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #ddd;
+}
+
+li a.active {
+  color: white;
+  background-color: #4caf50;
+}
+
+/* TABLE */
 table {
   margin-top: 24px;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -153,11 +183,11 @@ p#no-data {
   background: rgb(255, 255, 255);
   width: 66.66667%;
   display: inline-block;
+  padding-right: 32px;
 }
 
 .menuItem {
   padding: 10px 15px;
-  /* height: 100px; */
   display: inline-flex;
   border: 1px solid #ccc;
   background: #f7f7f7;
@@ -188,10 +218,6 @@ p#no-data {
   text-align: center;
   border-radius: 2px;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
-}
-
-.suggestedItemBtn {
-  border: 1px solid red;
 }
 
 /* BASKET */
@@ -257,4 +283,9 @@ p#no-data {
 }
 .fa-shopping-cart {
   font-size: 50px !important;
+}
+
+.hr {
+  margin-bottom: 40px;
+  background-color: #ed1c24;
 }

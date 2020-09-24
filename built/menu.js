@@ -65,6 +65,7 @@ var handleErrorMenu = function () {
     console.log("error loading menu!");
 };
 var addToBasket = function (menuItem) {
+    clearSuggestedItems();
     basketState = [__spread(basketState, [menuItem]).join(",")];
     createBasketView();
     checkRules(basketState);
@@ -93,7 +94,7 @@ var createSuggestedBar = function (rhs) {
         var stickyBar = document.getElementById("suggestedBar");
         var suggestedItemBtn_1 = document.createElement("button");
         suggestedItemBtn_1.innerText = "" + rhs;
-        suggestedItemBtn_1.className = "suggestedItemBtn";
+        suggestedItemBtn_1.className = "suggestedItemBtn menuItem";
         suggestedItemBtn_1.addEventListener("click", function () {
             return addToBasket(suggestedItemBtn_1.innerText);
         });
