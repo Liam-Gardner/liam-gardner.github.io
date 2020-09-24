@@ -145,10 +145,14 @@ p#no-data {
   color: red;
   font-size: 24px;
 }
+#container {
+  display: flex;
+}
 
-.menuItemContainer {
+#menuItemContainer {
   background: rgb(255, 255, 255);
   width: 66.66667%;
+  display: inline-block;
 }
 
 .menuItem {
@@ -190,6 +194,67 @@ p#no-data {
   border: 1px solid red;
 }
 
-#basketHeader {
+/* BASKET */
+#basketContainer {
   display: none;
+  background: rgb(247, 247, 247);
+  box-shadow: rgb(237, 28, 36) 1px 1px 9px -5px;
+  border-color: rgb(204, 204, 204);
+  width: 22%;
+  font-family: "Red Hat Text", sans-serif;
+}
+
+#basketHeader {
+  background-color: rgb(237, 28, 36);
+  padding: 10px 20px;
+  font-size: 24px;
+  color: #fff;
+}
+#basketDetails {
+  padding: 0 20px 20px;
+}
+#basketDetailsWrapper {
+  border-bottom: 1px solid #ed1c24;
+}
+#basketItem {
+  display: inline-block;
+  padding-bottom: 20px;
+  width: 80%;
+  padding-top: 15px;
+  font-size: 18px;
+}
+
+#removeItemBtn {
+  display: inline;
+  font-size: 20px;
+  border: 0;
+  background-color: inherit;
+}
+#removeItemBtn:focus {
+  outline: none;
+}
+#removeItemBtn:hover {
+  color: #ed1c24;
+}
+
+#clearBasket {
+  padding: 0 20px 20px;
+}
+#basketClearBtn {
+  font-family: "Red Hat Text", sans-serif;
+  font-size: 18px;
+  margin-top: 16px;
+  height: 45px;
+  color: #fff;
+  width: 100%;
+  background-color: rgb(237, 28, 36);
+  border: 0;
+}
+
+#basketEmpty {
+  margin-top: 40px;
+  text-align: center;
+}
+.fa-shopping-cart {
+  font-size: 50px !important;
 }

@@ -69,10 +69,9 @@ const getMenuItems = (formData: {
   password: string;
 }) => {
   //#region dummy data
-  //   createMenuItems(dummyMenu);
-  //   handleMenuBtnLoader(false);
+  // createMenuItems(dummyMenu);
+  // handleMenuBtnLoader(false);
   //#endregion
-
   fetch(`https://d736f8f720db.ngrok.io/useMetabase/login-dbs-demo`, {
     method: "POST",
     headers: {
@@ -86,7 +85,6 @@ const getMenuItems = (formData: {
         handleError2(); // probably need handler for menu - this is the table rules one
         handleMenuBtnLoader(false);
       } else {
-        // console.log("data", data);
         createMenuItems(data);
         handleMenuBtnLoader(false);
       }
@@ -114,9 +112,7 @@ const handleError2 = () => {
 let basketState: string[] = [];
 const addToBasket = (menuItem: string) => {
   basketState = [[...basketState, menuItem].join(",")];
-  //   basketState = [...basketState, menuItem];
   createBasketView();
-  // check if basket contains key from rules
   checkRules(basketState);
 };
 
@@ -164,95 +160,118 @@ const createSuggestedBar = (isRule: boolean) => {
 };
 
 const createMenuItems = (menu: string[]) => {
+  menu.sort();
   showBasket();
   createClearBasketBtn();
-  let menuItemContainer = document.createElement("div");
-  menuItemContainer.className = "menuItemContainer";
-  document.body.appendChild(menuItemContainer);
+  let menuItemContainer = document.getElementById("menuItemContainer");
   menu.forEach((item) => {
     let menuItem = document.createElement("button");
     menuItem.className = "menuItem";
     menuItem.innerHTML = item;
     menuItem.addEventListener("click", () => addToBasket(menuItem.innerHTML));
-    menuItemContainer.appendChild(menuItem);
+    menuItemContainer!.appendChild(menuItem);
   });
 };
 
 const createBasketView = () => {
-  document.getElementById("basket")!.innerText = basketState.toString();
+  const basketItem = document.getElementById("basketItem");
+  const emptyIcon = document.getElementById("basketEmpty");
+  if (emptyIcon!.style.display === "none" && !basketState.length) {
+    emptyIcon!.style.display = "block";
+  } else {
+    emptyIcon!.style.display = "none";
+  }
+
+  if (basketState.length) {
+    let arr = basketState.join(",").split(",");
+    basketItem!.innerText = "";
+    if (arr.length) {
+      arr.forEach((item) => {
+        basketItem!.innerHTML += `1 x ${item} <br />`;
+      });
+    }
+  } else {
+    basketItem!.innerText = "";
+  }
 };
 
 const showBasket = () => {
-  document.getElementById("basketHeader")!.style.display = "block";
+  document.getElementById("basketContainer")!.style.display = "inline-table";
 };
 
 const createClearBasketBtn = () => {
-  let clearBasketBtn = document.createElement("button");
-  clearBasketBtn.id = "clear-basket";
-  clearBasketBtn.className = "button clearBasket";
-  clearBasketBtn.innerText = "Clear Basket";
+  let clearBasketBtn = document.getElementById(
+    "basketClearBtn"
+  ) as HTMLInputElement;
   clearBasketBtn.addEventListener("click", clearBasket);
-  document.body.appendChild(clearBasketBtn);
 };
 //#region types
 //#endregion
 
 //#region dummy data
-// const dummyMenu = [
-//   "Southern Fried Chicken Fillet Burger",
-//   "Lunch Box",
-//   "Fish Goujon Wrap",
-//   "Grilled Chicken Fillet Burger",
-//   "Hamburger Kids Meal",
-//   "Large Bottle (1.25 l) ",
-//   "Southern Fried Chicken Kebab Tray",
-//   "12 Ham & Mushroom",
-//   "Doner Kebab Tray",
-//   "Bacon Garlic Cheese Chips",
-//   "Cheese Burger Meal",
-//   "The Big Beef Burger ",
-//   "Fresh Cod",
-//   "Sweet Chilli Dip",
-//   "Southern Fried Chicken Kebab",
-//   "Taco Sauce",
-//   "Thursday Special",
-//   "Friday Special",
-//   "Southern Fried Chicken Fillet Burger Meal",
-//   "Quarter Pounder Burger Meal",
-//   "Taco Chips",
-//   "Curry Sauce",
-//   "Wrap & Drink",
-//   "Doner Kebab",
-//   "Supreme Chicken Baguette",
-//   "Wednesday Special",
-//   "Garlic Cheese Chips",
-//   "Kebab Meal Deal",
-//   "Supreme Chicken Wrap",
-//   "Kebab Sauce",
-//   "Tuesday Special",
-//   "Southern Fried Chicken Kebab Meal",
-//   "Southern Fried Chicken Wing",
-//   "Vegetable Burger",
-//   "Veggie Kebab",
-//   "Curry Chip Baguette",
-//   "Fish Portion",
-//   "BBQ Sauce",
-//   "The Bacon Deluxe",
-//   "Chicken Goujons Wrap",
-//   "Lunch Box Meal",
-//   "Chicken Nuggets",
-//   "Chicken Burger",
-//   "The Cheesy Pitta",
-//   "Quarter Pounder Burger",
-//   "Goujon Box Meal",
-//   "Chicken Goujons",
-//   "Sausage Box Meal",
-//   "Chicken Wings",
-//   "Salad Burger",
-//   "The Spicy Pitta",
-//   "Chip Baguette & Drink",
-//   "Dinner Box",
-// ];
+const dummyMenu = [
+  "The Big Deal Meal",
+  "Dinner For 2 Meal",
+  "Fresh Cod",
+  "Smoked Cod",
+  "Curry Chips",
+  "Friday Special",
+  "Potato Cakes",
+  "Battered Sausage",
+  "Southern Fried Chicken Fillet Burger",
+  "Lunch Box",
+  "Fish Goujon Wrap",
+  "Grilled Chicken Fillet Burger",
+  "Hamburger Kids Meal",
+  "Large Bottle (1.25 l) ",
+  "Southern Fried Chicken Kebab Tray",
+  "12 Ham & Mushroom",
+  "Doner Kebab Tray",
+  "Bacon Garlic Cheese Chips",
+  "Cheese Burger Meal",
+  "The Big Beef Burger ",
+  "Fresh Cod",
+  "Sweet Chilli Dip",
+  "Southern Fried Chicken Kebab",
+  "Taco Sauce",
+  "Thursday Special",
+  "Friday Special",
+  "Southern Fried Chicken Fillet Burger Meal",
+  "Quarter Pounder Burger Meal",
+  "Taco Chips",
+  "Curry Sauce",
+  "Wrap & Drink",
+  "Doner Kebab",
+  "Supreme Chicken Baguette",
+  "Wednesday Special",
+  "Garlic Cheese Chips",
+  "Kebab Meal Deal",
+  "Supreme Chicken Wrap",
+  "Kebab Sauce",
+  "Tuesday Special",
+  "Southern Fried Chicken Kebab Meal",
+  "Southern Fried Chicken Wing",
+  "Vegetable Burger",
+  "Veggie Kebab",
+  "Curry Chip Baguette",
+  "Fish Portion",
+  "BBQ Sauce",
+  "The Bacon Deluxe",
+  "Chicken Goujons Wrap",
+  "Lunch Box Meal",
+  "Chicken Nuggets",
+  "Chicken Burger",
+  "The Cheesy Pitta",
+  "Quarter Pounder Burger",
+  "Goujon Box Meal",
+  "Chicken Goujons",
+  "Sausage Box Meal",
+  "Chicken Wings",
+  "Salad Burger",
+  "The Spicy Pitta",
+  "Chip Baguette & Drink",
+  "Dinner Box",
+];
 
 const dummyRules = {
   "Battered Burger,Dinner For 2 Meal,Doner Kebab": "The Big Deal Meal",

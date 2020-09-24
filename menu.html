@@ -51,12 +51,35 @@
         Sausage
       </p>
     </div>
-    <div>
-      <h3 id="basketHeader">Basket:</h3>
-      <p id="basket"></p>
+    <div id="container">
+      <!-- MENU -->
+      <div id="menuItemContainer"></div>
+      <!-- END -->
+      <!-- SUGGESTIONS -->
+      <div id="suggestedBar">
+        <p>People also bought:</p>
+      </div>
+      <!-- END -->
+      <!-- BASKET NEW -->
+      <div id="basketContainer">
+        <div id="basketHeader">Basket</div>
+        <div id="basketDetails">
+          <div id="basketDetailsWrapper">
+            <div id="basketEmpty">
+              <i class="fa fa-shopping-cart"></i>
+              <p>Basket is empty</p>
+            </div>
+            <div id="basketItem"></div>
+            <!-- <button id="removeItemBtn">
+              <i class="fa fa-minus-circle"></i>
+            </button> -->
+          </div>
+        </div>
+        <div id="clearBasket">
+          <button id="basketClearBtn">Clear Basket</button>
+        </div>
+      </div>
     </div>
-    <div id="suggestedBar">
-      <p>People also bought:</p>
-    </div>
+    <!-- END -->
   </body>
 </html>
