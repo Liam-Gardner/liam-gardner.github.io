@@ -18,7 +18,7 @@ var addEvents = function () {
         .addEventListener("click", handleFormSubmit);
 };
 var state = { loading: false };
-var BASE_URL = "https://d736f8f720db.ngrok.io";
+var BASE_URL = "https://marketbasket.ngrok.io";
 var clearElements = function () {
     var _a, _b, _c;
     var noData = document.getElementById("no-data");

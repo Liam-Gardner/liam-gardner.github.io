@@ -9,7 +9,7 @@ const addEvents = () => {
 };
 
 let state: State = { loading: false };
-const BASE_URL = "https://d736f8f720db.ngrok.io";
+const BASE_URL = "https://marketbasket.ngrok.io";
 
 const clearElements = () => {
   const noData = document.getElementById("no-data");

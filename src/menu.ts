@@ -26,7 +26,7 @@ const getMenuItems = () => {
 
   const formData = { username, password, storeId };
 
-  fetch(`https://d736f8f720db.ngrok.io/useMetabase/login-dbs-demo`, {
+  fetch(`${BASE_URL}/useMetabase/login-dbs-demo`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
