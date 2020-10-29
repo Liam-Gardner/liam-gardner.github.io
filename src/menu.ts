@@ -26,7 +26,7 @@ const getMenuItems = () => {
 
   const formData = { username, password, storeId };
 
-  fetch(`${BASE_URL}/useMetabase/login-dbs-demo`, {
+  fetch("https://marketbasket.ngrok.io/useMetabase/login-dbs-demo", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
