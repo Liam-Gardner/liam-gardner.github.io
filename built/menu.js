@@ -40,7 +40,7 @@ var getMenuItems = function () {
     var password = localStorage.getItem("password");
     var storeId = localStorage.getItem("storeId");
     var formData = { username: username, password: password, storeId: storeId };
-    fetch(BASE_URL + "/useMetabase/login-dbs-demo", {
+    fetch("https://marketbasket.ngrok.io/useMetabase/login-dbs-demo", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
