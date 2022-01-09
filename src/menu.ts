@@ -2,7 +2,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
   getMenuItems();
   createRulesToTry();
 });
-
+const MENU_BASE_URL_DEV = "http://localhost:3500";
+const MENU_BASE_URL_PROD = "https://marketbasket.ngrok.io/";
 const parsedRules: { [key: string]: string }[] = JSON.parse(localStorage.rules);
 let basketState: string[] = [];
 
@@ -26,7 +27,7 @@ const getMenuItems = () => {
 
   const formData = { username, password, storeId };
 
-  fetch("https://marketbasket.ngrok.io/useMetabase/login-dbs-demo", {
+  fetch(`${MENU_BASE_URL_DEV}/useMetabase/login-dbs-demo`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

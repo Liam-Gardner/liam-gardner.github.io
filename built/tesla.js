@@ -71,16 +71,15 @@ var handleAuthandIdSubmit = function () {
 var TESLA_BASE_URL = "http://localhost:3500";
 var teslaHandleBtnLoader = function (loading) {
     var button = document.getElementById("submit");
-    state.loading = loading;
-    if (state.loading && button) {
+    teslaState.loading = loading;
+    if (teslaState.loading && button) {
         button.setAttribute("disabled", "true");
         button.innerHTML =
             '<i id="loader-btn" class="fa fa-circle-o-notch fa-spin"></i> Loading';
         document.getElementById("loader-btn").style.display = "inline-block";
     }
-    else if (!state.loading && button) {
+    else if (!teslaState.loading && button) {
         button.removeAttribute("disabled");
-        // state.loading = false; // not needed?
         button.innerHTML = "Submit";
     }
 };
@@ -124,7 +123,7 @@ var teslaLogin = function (formData) { return __awaiter(_this, void 0, void 0, f
             case 2:
                 data = _a.sent();
                 console.log("data", data);
-                state.accessToken = data.access_token;
+                teslaState.accessToken = data.access_token;
                 // TODO: set it in local storage too maybe
                 teslaHandleBtnLoader(false);
                 return [3 /*break*/, 4];
