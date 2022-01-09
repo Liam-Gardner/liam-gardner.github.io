@@ -22,6 +22,8 @@ window.addEventListener("DOMContentLoaded", function (event) {
     getMenuItems();
     createRulesToTry();
 });
+var MENU_BASE_URL_DEV = "http://localhost:3500";
+var MENU_BASE_URL_PROD = "https://marketbasket.ngrok.io/";
 var parsedRules = JSON.parse(localStorage.rules);
 var basketState = [];
 var createRulesToTry = function () {
@@ -40,7 +42,7 @@ var getMenuItems = function () {
     var password = localStorage.getItem("password");
     var storeId = localStorage.getItem("storeId");
     var formData = { username: username, password: password, storeId: storeId };
-    fetch("https://marketbasket.ngrok.io/useMetabase/login-dbs-demo", {
+    fetch(MENU_BASE_URL_DEV + "/useMetabase/login-dbs-demo", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
