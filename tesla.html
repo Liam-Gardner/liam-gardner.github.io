@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tesla web</title>
+    <link rel="stylesheet" href="./src/tesla-styles/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="./built/tesla.js"></script>
+  </head>
+  <body>
+    <form method="POST" autocomplete="on" style="padding: 16px">
+      <h3>Tesla login</h3>
+      <div style="margin-bottom: 8px">
+        <label for="email" class="form-label">Email</label>
+        <input type="text" name="email" id="email" />
+      </div>
+      <div>
+        <label for="password" class="form-label">Password</label>
+        <input type="password" name="password" id="password" />
+      </div>
+      <div style="display: inline-block; width: 120px"></div>
+      <button type="button" id="submit" class="buttonload button">
+        Submit
+      </button>
+    </form>
+    <hr />
+    <!-- ENTER AUTH CODE -->
+    <form style="padding: 16px">
+      <h3>Enter auth code</h3>
+      <div style="margin-bottom: 8px">
+        <label for="auth" class="form-label">Auth</label>
+        <input type="text" name="auth" id="auth" />
+      </div>
+      <h3>Enter vechile id</h3>
+      <div style="margin-bottom: 8px">
+        <label for="carId" class="form-label">Vechicle Id</label>
+        <input type="text" name="carId" id="carId" />
+      </div>
+      <div style="display: inline-block; width: 120px"></div>
+      <button type="button" id="auth-vehicle-submit" class="buttonload button">
+        Submit
+      </button>
+    </form>
+    <!-- COMMANDS -->
+    <div>
+      <form method="POST" autocomplete="on" style="padding: 16px">
+        <label for="checkbox" class="form-label">Flash lights</label>
+        <label class="switch">
+          <input type="checkbox" id="flash-lights" />
+          <span class="slider round"></span>
+        </label>
+      </form>
+    </div>
+  </body>
+</html>
