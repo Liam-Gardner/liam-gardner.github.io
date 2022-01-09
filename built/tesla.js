@@ -63,7 +63,7 @@ var handleAuthandIdSubmit = function () {
         carId: carId,
     };
     teslaState.accessToken = formData.auth;
-    teslaState.accessToken = formData.carId;
+    teslaState.vehicleId = formData.carId;
     teslaHandleBtnLoader(false);
     console.log(teslaState);
 };
