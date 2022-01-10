@@ -7,21 +7,28 @@ const addTeslaEvents = () => {
     .getElementById("submit")!
     .addEventListener("click", handleLoginFormSubmit);
 
+  // document
+  //   .getElementById("flash-lights")!
+  //   .addEventListener("click", (e) => handleCarCommand(e as any));
+
   document
-    .getElementById("flash-lights")!
-    .addEventListener("click", (e) => handleCarCommand(e as any));
+    .getElementById("charge-port")!
+    .addEventListener("click", (e) => handleChargePort(e as any));
 
   document
     .getElementById("auth-vehicle-submit")!
     .addEventListener("click", handleAuthandIdSubmit);
 };
 
+//#region State
 let teslaState: TeslaState = {
   accessToken: "",
   loading: false,
   vehicleId: "",
 };
+//#endregion
 
+//#region capture auth credentials
 const handleAuthandIdSubmit = () => {
   teslaHandleBtnLoader(true);
   const auth = (<HTMLInputElement>document.getElementById("auth")).value;
@@ -36,27 +43,12 @@ const handleAuthandIdSubmit = () => {
   teslaState.vehicleId = formData.carId;
   teslaHandleBtnLoader(false);
 
-  console.log(teslaState)
-
+  console.log(teslaState);
 };
+//#endregion
 
-// const BASE_URL = "https://marketbasket.ngrok.io";
+//#region LOGIN
 const TESLA_BASE_URL = "http://localhost:3500";
-
-const teslaHandleBtnLoader = (loading: boolean) => {
-  const button = document.getElementById("submit");
-  teslaState.loading = loading;
-  if (teslaState.loading && button) {
-    button.setAttribute("disabled", "true");
-    button.innerHTML =
-      '<i id="loader-btn" class="fa fa-circle-o-notch fa-spin"></i> Loading';
-    document.getElementById("loader-btn")!.style.display = "inline-block";
-  } else if (!teslaState.loading && button) {
-    button.removeAttribute("disabled");
-    button.innerHTML = "Submit";
-  }
-};
-
 const handleLoginFormSubmit = async () => {
   teslaHandleBtnLoader(true);
   const email = (<HTMLInputElement>document.getElementById("email")).value;
@@ -70,7 +62,6 @@ const handleLoginFormSubmit = async () => {
 
   await teslaLogin(formData);
 };
-// eu-0f96c749c7bbb31177893e685a936a9ac56c6c3fd1c8478edbb914d08f6d75b6
 const teslaLogin = async (formData: TeslaInitialFormData) => {
   try {
     const response = await fetch(`${TESLA_BASE_URL}/main/login`, {
@@ -91,25 +82,44 @@ const teslaLogin = async (formData: TeslaInitialFormData) => {
     teslaHandleBtnLoader(false);
   }
 };
+//#endregion
 
-// TODO: make generic
-const handleCarCommand = async (e: any) => {
-  // const chargePortStatus = e.target.checked ? "open" : "close";
+//#region commands
+const COMMAND_BASE_URL = `http://localhost:3500/main`;
+const handleChargePort = async (e: any) => {
+  const chargePortStatus = e.target.checked
+    ? "unlock-charge-port"
+    : "lock-charge-port";
   try {
-    await fetch(
-      `https://owner-api.teslamotors.com/api/1/vehicles/${teslaState.vehicleId}/command/flash_lights`,
-      {
-        method: "POST",
-        headers: {
-          Authorisation: `Bearer ${teslaState.accessToken!}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    await fetch(`${COMMAND_BASE_URL}/${chargePortStatus}`, {
+      method: "POST",
+      // headers: {
+      //   // TODO: eventually we will send these
+      //   Authorisation: `Bearer ${teslaState.accessToken!}`,
+      //   "Content-Type": "application/json",
+      // },
+    });
   } catch (e) {
     console.log(e);
   }
 };
+//#endregion
+
+//#region helpers
+const teslaHandleBtnLoader = (loading: boolean) => {
+  const button = document.getElementById("submit");
+  teslaState.loading = loading;
+  if (teslaState.loading && button) {
+    button.setAttribute("disabled", "true");
+    button.innerHTML =
+      '<i id="loader-btn" class="fa fa-circle-o-notch fa-spin"></i> Loading';
+    document.getElementById("loader-btn")!.style.display = "inline-block";
+  } else if (!teslaState.loading && button) {
+    button.removeAttribute("disabled");
+    button.innerHTML = "Submit";
+  }
+};
+//#endregion
 
 //#region types
 type TeslaState = {

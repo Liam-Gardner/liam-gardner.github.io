@@ -42,18 +42,24 @@ var addTeslaEvents = function () {
     document
         .getElementById("submit")
         .addEventListener("click", handleLoginFormSubmit);
+    // document
+    //   .getElementById("flash-lights")!
+    //   .addEventListener("click", (e) => handleCarCommand(e as any));
     document
-        .getElementById("flash-lights")
-        .addEventListener("click", function (e) { return handleCarCommand(e); });
+        .getElementById("charge-port")
+        .addEventListener("click", function (e) { return handleChargePort(e); });
     document
         .getElementById("auth-vehicle-submit")
         .addEventListener("click", handleAuthandIdSubmit);
 };
+//#region State
 var teslaState = {
     accessToken: "",
     loading: false,
     vehicleId: "",
 };
+//#endregion
+//#region capture auth credentials
 var handleAuthandIdSubmit = function () {
     teslaHandleBtnLoader(true);
     var auth = document.getElementById("auth").value;
@@ -67,22 +73,9 @@ var handleAuthandIdSubmit = function () {
     teslaHandleBtnLoader(false);
     console.log(teslaState);
 };
-// const BASE_URL = "https://marketbasket.ngrok.io";
+//#endregion
+//#region LOGIN
 var TESLA_BASE_URL = "http://localhost:3500";
-var teslaHandleBtnLoader = function (loading) {
-    var button = document.getElementById("submit");
-    teslaState.loading = loading;
-    if (teslaState.loading && button) {
-        button.setAttribute("disabled", "true");
-        button.innerHTML =
-            '<i id="loader-btn" class="fa fa-circle-o-notch fa-spin"></i> Loading';
-        document.getElementById("loader-btn").style.display = "inline-block";
-    }
-    else if (!teslaState.loading && button) {
-        button.removeAttribute("disabled");
-        button.innerHTML = "Submit";
-    }
-};
 var handleLoginFormSubmit = function () { return __awaiter(_this, void 0, void 0, function () {
     var email, password, formData;
     return __generator(this, function (_a) {
@@ -136,29 +129,48 @@ var teslaLogin = function (formData) { return __awaiter(_this, void 0, void 0, f
         }
     });
 }); };
-// TODO: make generic
-var handleCarCommand = function (e) { return __awaiter(_this, void 0, void 0, function () {
-    var e_1;
+//#endregion
+//#region commands
+var COMMAND_BASE_URL = "http://localhost:3500/main";
+var handleChargePort = function (e) { return __awaiter(_this, void 0, void 0, function () {
+    var chargePortStatus, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, fetch("https://owner-api.teslamotors.com/api/1/vehicles/" + teslaState.vehicleId + "/command/flash_lights", {
-                        method: "POST",
-                        headers: {
-                            Authorisation: "Bearer " + teslaState.accessToken,
-                            "Content-Type": "application/json",
-                        },
-                    })];
+                chargePortStatus = e.target.checked
+                    ? "unlock-charge-port"
+                    : "lock-charge-port";
+                _a.label = 1;
             case 1:
-                _a.sent();
-                return [3 /*break*/, 3];
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, fetch(COMMAND_BASE_URL + "/" + chargePortStatus, {
+                        method: "POST",
+                    })];
             case 2:
+                _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
                 e_1 = _a.sent();
                 console.log(e_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
+//#endregion
+//#region helpers
+var teslaHandleBtnLoader = function (loading) {
+    var button = document.getElementById("submit");
+    teslaState.loading = loading;
+    if (teslaState.loading && button) {
+        button.setAttribute("disabled", "true");
+        button.innerHTML =
+            '<i id="loader-btn" class="fa fa-circle-o-notch fa-spin"></i> Loading';
+        document.getElementById("loader-btn").style.display = "inline-block";
+    }
+    else if (!teslaState.loading && button) {
+        button.removeAttribute("disabled");
+        button.innerHTML = "Submit";
+    }
+};
 //#endregion
